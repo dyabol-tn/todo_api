@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Task(models.Model):
@@ -12,25 +13,29 @@ class Task(models.Model):
         (DONE, 'Выполнено'),
     ]
 
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='tasks',
+        verbose_name='Пользователь'
+    )
+
     title = models.CharField(
         max_length=200,
-        verbose_name='Заголовок',
-        help_text='Введите заголовок задачи'
+        verbose_name='Заголовок'
     )
 
     description = models.TextField(
         blank=True,
         null=True,
-        verbose_name='Описание',
-        help_text='Детальное описание задачи'
+        verbose_name='Описание'
     )
 
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default=TODO,
-        verbose_name='Статус',
-        help_text='Текущий статус выполнения'
+        verbose_name='Статус'
     )
 
     created_at = models.DateTimeField(
